@@ -1,57 +1,76 @@
+/* App.css */
 body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
-  background-color: #f1f8e9;
-  color: #2e7d32;
+  padding: 0;
 }
 
-.App {
-  max-width: 700px;
-  margin: auto;
-  padding: 20px;
-  text-align: center;
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  font-size: 2.5rem;
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.input-section {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
   margin-bottom: 20px;
-  color: #558b2f;
 }
 
-input[type="text"] {
+.input-section input {
+  flex: 1;
   padding: 10px;
-  border: 2px solid #aed581;
-  border-radius: 10px;
-  width: 60%;
-  margin-right: 10px;
-  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
 }
 
-button {
-  background-color: #81c784;
+.input-section button {
+  padding: 10px 16px;
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: bold;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
-button:hover {
-  background-color: #66bb6a;
+.input-section button:hover {
+  background-color: #0056b3;
 }
 
-.search-results,
-.daily-tracker {
-  background-color: #ffffff;
-  border-radius: 15px;
-  padding: 20px;
+.log {
   margin-top: 20px;
-  box-shadow: 0px 4px 10px rgba(0, 100, 0, 0.1);
-  text-align: left;
 }
 
-.food-list {
-  margin-top: 10px;
+.entry {
+  background-color: #f1f1f1;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #333;
+}
+
+.summary {
+  background-color: #e8f4ea;
+  margin-top: 30px;
+  padding: 15px 20px;
+  border-radius: 10px;
+}
+
+.summary h3 {
+  margin-top: 0;
+  color: #2d6a4f;
 }
