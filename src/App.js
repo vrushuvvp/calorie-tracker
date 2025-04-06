@@ -284,6 +284,11 @@ function App() {
     }
     setSearch('');
   };
+  const handleClear = () => {
+    setLog([]);
+    localStorage.removeItem("foodLog");
+  };
+  
 
   const totals = log.reduce((acc, item) => {
     acc.calories += item.calories;
@@ -304,6 +309,8 @@ function App() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <button onClick={handleClear} className="clear-btn">Clear</button>
+
         <button onClick={handleAdd}>Add</button>
       </div>
 
