@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/calorie-tracker/static/css/main.d09f8d9c.chunk.css",
+    "main.css": "/calorie-tracker/static/css/main.306fbf10.chunk.css",
     "main.js": "/calorie-tracker/static/js/main.34497480.chunk.js",
     "main.js.map": "/calorie-tracker/static/js/main.34497480.chunk.js.map",
     "runtime-main.js": "/calorie-tracker/static/js/runtime-main.1acd7218.js",
@@ -10,15 +10,15 @@
     "static/js/3.ddc6a9a6.chunk.js": "/calorie-tracker/static/js/3.ddc6a9a6.chunk.js",
     "static/js/3.ddc6a9a6.chunk.js.map": "/calorie-tracker/static/js/3.ddc6a9a6.chunk.js.map",
     "index.html": "/calorie-tracker/index.html",
-    "precache-manifest.958b072e2ffb1b314bd92a90f5ab022f.js": "/calorie-tracker/precache-manifest.958b072e2ffb1b314bd92a90f5ab022f.js",
+    "precache-manifest.99cdf7b2c5b634926b8b7f3c6e77cb4b.js": "/calorie-tracker/precache-manifest.99cdf7b2c5b634926b8b7f3c6e77cb4b.js",
     "service-worker.js": "/calorie-tracker/service-worker.js",
-    "static/css/main.d09f8d9c.chunk.css.map": "/calorie-tracker/static/css/main.d09f8d9c.chunk.css.map",
+    "static/css/main.306fbf10.chunk.css.map": "/calorie-tracker/static/css/main.306fbf10.chunk.css.map",
     "static/js/2.48f12f5d.chunk.js.LICENSE.txt": "/calorie-tracker/static/js/2.48f12f5d.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.1acd7218.js",
     "static/js/2.48f12f5d.chunk.js",
-    "static/css/main.d09f8d9c.chunk.css",
+    "static/css/main.306fbf10.chunk.css",
     "static/js/main.34497480.chunk.js"
   ]
 }
