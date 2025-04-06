@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "734e51d71a979ac130a387118cf08004",
+    "revision": "428832ba6667bef9ed28e7d83adb3612",
     "url": "/calorie-tracker/index.html"
   },
   {
-    "revision": "527d03f854637c303501",
-    "url": "/calorie-tracker/static/css/main.e7039703.chunk.css"
+    "revision": "6cd822d7893a7786e19b",
+    "url": "/calorie-tracker/static/css/main.eea762f3.chunk.css"
   },
   {
     "revision": "0c7b96c9ac02df515fe5",
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/calorie-tracker/static/js/3.ddc6a9a6.chunk.js"
   },
   {
-    "revision": "527d03f854637c303501",
+    "revision": "6cd822d7893a7786e19b",
     "url": "/calorie-tracker/static/js/main.0d1fc241.chunk.js"
   },
   {
