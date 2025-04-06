@@ -1,16 +1,29 @@
-import React, { useState } from "react";
-import "./App.css";
+import React, { useState, useEffect } from 'react';
+import './App.css';
 
-
-
-function App() {
-  const [foodInput, setFoodInput] = useState("");
-  const [searchResult, setSearchResult] = useState(null);
-  const [notFound, setNotFound] = useState(false);
-  const [dailyList, setDailyList] = useState([]);
-
-  const foodDatabase = {
-    "idli": { calories: 58, protein: 2, carbs: 12, fat: 0.4 },
+// Indian food items with calories, protein, carbs, fat
+const foodData = {
+  "idli": { calories: 58, protein: 2, carbs: 12, fat: 0.4 },
+  "masala dosa": { calories: 250, protein: 6, carbs: 30, fat: 10 },
+  "ghee roast dosa": { calories: 300, protein: 7, carbs: 35, fat: 15 },
+  "podi idli": { calories: 180, protein: 4, carbs: 25, fat: 8 },
+  "masala papad": { calories: 100, protein: 2, carbs: 12, fat: 5 },
+  "jowar roti": { calories: 120, protein: 3, carbs: 24, fat: 2 },
+  "poha": { calories: 180, protein: 2, carbs: 25, fat: 6 },
+  "chapati": { calories: 104, protein: 3, carbs: 15, fat: 3 },
+  "rajma": { calories: 140, protein: 7, carbs: 23, fat: 1 },
+  "makki di roti": { calories: 150, protein: 3, carbs: 30, fat: 3 },
+  "sarson da saag": { calories: 180, protein: 6, carbs: 12, fat: 9 },
+  "badnekayi palya": { calories: 90, protein: 2, carbs: 10, fat: 5 },
+  "ennegayi": { calories: 130, protein: 3, carbs: 12, fat: 7 },
+  "chow chow bath": { calories: 280, protein: 5, carbs: 35, fat: 10 },
+  "dal makhani": { calories: 300, protein: 11, carbs: 22, fat: 15 },
+  "butter chicken": { calories: 430, protein: 30, carbs: 10, fat: 30 },
+  "paneer tikka": { calories: 200, protein: 14, carbs: 4, fat: 12 },
+  "veg pulao": { calories: 190, protein: 4, carbs: 30, fat: 6 },
+  "aloo gobi": { calories: 160, protein: 3, carbs: 18, fat: 8 },
+  "bhindi masala": { calories: 130, protein: 2, carbs: 14, fat: 7 },
+  "idli": { calories: 58, protein: 2, carbs: 12, fat: 0.4 },
   "dosa": { calories: 133, protein: 3, carbs: 17, fat: 5 },
   "samosa": { calories: 262, protein: 4, carbs: 32, fat: 13 },
   "kachori": { calories: 200, protein: 3, carbs: 25, fat: 10 },
@@ -242,85 +255,72 @@ function App() {
   "shenga chutney": { calories: 110, protein: 3, carbs: 5, fat: 8 },
   "karabath": { calories: 220, protein: 4, carbs: 30, fat: 8 },
   "huchchellu chutney": { calories: 90, protein: 2, carbs: 4, fat: 7 }
+  // Add more items if needed
+};
 
+function App() {
+  const [search, setSearch] = useState('');
+  const [log, setLog] = useState([]);
 
-
-
-
-  // You can continue adding more if needed
-  };
-
-  const handleSearch = () => {
-    const query = foodInput.trim().toLowerCase();
-    if (foodDatabase[query]) {
-      const foodData = foodDatabase[query];
-      setSearchResult({ name: query, ...foodData });
-      setNotFound(false);
-      setDailyList((prev) => [...prev, { name: query, ...foodData }]);
-    } else {
-      setSearchResult(null);
-      setNotFound(true);
+  // Load from localStorage on first render
+  useEffect(() => {
+    const storedLog = localStorage.getItem('foodLog');
+    if (storedLog) {
+      setLog(JSON.parse(storedLog));
     }
-    setFoodInput("");
+  }, []);
+
+  // Save to localStorage whenever log changes
+  useEffect(() => {
+    localStorage.setItem('foodLog', JSON.stringify(log));
+  }, [log]);
+
+  const handleAdd = () => {
+    const item = foodData[search.toLowerCase()];
+    if (item) {
+      setLog([...log, { name: search, ...item }]);
+    } else {
+      alert("Food item not found in database!");
+    }
+    setSearch('');
   };
 
-  const total = dailyList.reduce(
-    (acc, item) => {
-      acc.calories += item.calories;
-      acc.protein += item.protein;
-      acc.carbs += item.carbs;
-      acc.fat += item.fat;
-      return acc;
-    },
-    { calories: 0, protein: 0, carbs: 0, fat: 0 }
-  );
+  const totals = log.reduce((acc, item) => {
+    acc.calories += item.calories;
+    acc.protein += item.protein;
+    acc.carbs += item.carbs;
+    acc.fat += item.fat;
+    return acc;
+  }, { calories: 0, protein: 0, carbs: 0, fat: 0 });
 
   return (
-    <div className="App">
-      <h1>🍃 Indian Food Tracker</h1>
+    <div className="container">
+      <h1>Indian Food Macro Tracker 🍛</h1>
 
-      <div className="search-section">
+      <div className="input-section">
         <input
           type="text"
-          placeholder="Enter Indian food..."
-          value={foodInput}
-          onChange={(e) => setFoodInput(e.target.value)}
+          placeholder="Enter Indian food name"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <button onClick={handleSearch}>Add</button>
+        <button onClick={handleAdd}>Add</button>
       </div>
 
-      {searchResult && (
-        <div className="search-results">
-          <h3>{searchResult.name.toUpperCase()}</h3>
-          <ul>
-            <li><strong>Calories:</strong> {searchResult.calories} kcal</li>
-            <li><strong>Protein:</strong> {searchResult.protein} g</li>
-            <li><strong>Carbs:</strong> {searchResult.carbs} g</li>
-            <li><strong>Fat:</strong> {searchResult.fat} g</li>
-          </ul>
-        </div>
-      )}
+      <div className="log">
+        {log.map((item, idx) => (
+          <div key={idx} className="entry">
+            <strong>{item.name}</strong> — {item.calories} kcal | Protein: {item.protein}g | Carbs: {item.carbs}g | Fat: {item.fat}g
+          </div>
+        ))}
+      </div>
 
-      {notFound && (
-        <div className="search-results">
-          <p>❌ Sorry, we don't have data for "<strong>{foodInput}</strong>"</p>
-        </div>
-      )}
-
-      <div className="daily-tracker">
-        <h2>📊 Daily Summary</h2>
-        <p><strong>Total Calories:</strong> {total.calories} kcal</p>
-        <p><strong>Total Protein:</strong> {total.protein} g</p>
-        <p><strong>Total Carbs:</strong> {total.carbs} g</p>
-        <p><strong>Total Fat:</strong> {total.fat} g</p>
-
-        <div className="food-list">
-          {dailyList.map((item, index) => (
-            <p key={index}>
-              🍴 <strong>{item.name}</strong> – {item.calories} kcal, {item.protein}g P, {item.carbs}g C, {item.fat}g F
-            </p>
-          ))}
-        </div>
+      <div className="summary">
+        <h3>Daily Totals</h3>
+        <p>Calories: {totals.calories} kcal</p>
+        <p>Protein: {totals.protein} g</p>
+        <p>Carbs: {totals.carbs} g</p>
+        <p>Fat: {totals.fat} g</p>
       </div>
     </div>
   );
