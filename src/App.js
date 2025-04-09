@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import Fuse from 'fuse.js';
 
-// Indian food items with calories, protein, carbs, fat
-const foodData = {
-  "idli": { calories: 58, protein: 2, carbs: 12, fat: 0.4 },
+function App() {
+  const [search, setSearch] = useState('');
+  const [log, setLog] = useState([]);
+  const [selectedItem, setSelectedItem] = useState('');
+
+  const foodData = {
+    "idli": { calories: 58, protein: 2, carbs: 12, fat: 0.4 },
   "masala dosa": { calories: 250, protein: 6, carbs: 30, fat: 10 },
   "ghee roast dosa": { calories: 300, protein: 7, carbs: 35, fat: 15 },
   "podi idli": { calories: 180, protein: 4, carbs: 25, fat: 8 },
@@ -23,7 +27,6 @@ const foodData = {
   "veg pulao": { calories: 190, protein: 4, carbs: 30, fat: 6 },
   "aloo gobi": { calories: 160, protein: 3, carbs: 18, fat: 8 },
   "bhindi masala": { calories: 130, protein: 2, carbs: 14, fat: 7 },
-  "idli": { calories: 58, protein: 2, carbs: 12, fat: 0.4 },
   "dosa": { calories: 133, protein: 3, carbs: 17, fat: 5 },
   "samosa": { calories: 262, protein: 4, carbs: 32, fat: 13 },
   "kachori": { calories: 200, protein: 3, carbs: 25, fat: 10 },
@@ -256,79 +259,61 @@ const foodData = {
   "karabath": { calories: 220, protein: 4, carbs: 30, fat: 8 },
   "huchchellu chutney": { calories: 90, protein: 2, carbs: 4, fat: 7 }
   // Add more items if needed
-};
+    // Add more foods here
+  };
 
-function App() {
-  const [search, setSearch] = useState('');
-  const [log, setLog] = useState([]);
+  const foodItems = Object.keys(foodData);
 
-  // Load from localStorage on first render
-  useEffect(() => {
-    const storedLog = localStorage.getItem('foodLog');
-    if (storedLog) {
-      setLog(JSON.parse(storedLog));
-    }
-  }, []);
+  const fuse = new Fuse(foodItems, {
+    includeScore: true,
+    threshold: 0.3,
+  });
 
-  // Save to localStorage whenever log changes
-  useEffect(() => {
-    localStorage.setItem('foodLog', JSON.stringify(log));
-  }, [log]);
+  const filteredItems = search.trim()
+    ? fuse.search(search).map(res => res.item)
+    : foodItems;
 
   const handleAdd = () => {
-    const item = foodData[search.toLowerCase()];
-    if (item) {
-      setLog([...log, { name: search, ...item }]);
-    } else {
-      alert("Food item not found in database!");
+    if (selectedItem && foodData[selectedItem]) {
+      setLog([...log, selectedItem]);
+      setSelectedItem('');
+      setSearch('');
     }
-    setSearch('');
   };
+
   const handleClear = () => {
     setLog([]);
-    localStorage.removeItem("foodLog");
   };
-  
-
-  const totals = log.reduce((acc, item) => {
-    acc.calories += item.calories;
-    acc.protein += item.protein;
-    acc.carbs += item.carbs;
-    acc.fat += item.fat;
-    return acc;
-  }, { calories: 0, protein: 0, carbs: 0, fat: 0 });
 
   return (
-    <div className="container">
-      <h1>Indian Food Macro Tracker 🍛</h1>
+    <div>
+      <input
+        type="text"
+        placeholder="Search food..."
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setSelectedItem(''); // reset selection
+        }}
+      />
 
-      <div className="input-section">
-        <input
-          type="text"
-          placeholder="Enter Indian food name"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button onClick={handleClear} className="clear-btn">Clear</button>
-
-        <button onClick={handleAdd}>Add</button>
-      </div>
-
-      <div className="log">
-        {log.map((item, idx) => (
-          <div key={idx} className="entry">
-            <strong>{item.name}</strong> — {item.calories} kcal | Protein: {item.protein}g | Carbs: {item.carbs}g | Fat: {item.fat}g
-          </div>
+      <ul>
+        {filteredItems.map((item) => (
+          <li key={item} onClick={() => setSelectedItem(item)} style={{ cursor: 'pointer', fontWeight: selectedItem === item ? 'bold' : 'normal' }}>
+            {item} - {foodData[item].calories} cal, {foodData[item].protein}g protein
+          </li>
         ))}
-      </div>
+      </ul>
 
-      <div className="summary">
-        <h3>Daily Totals</h3>
-        <p>Calories: {totals.calories} kcal</p>
-        <p>Protein: {totals.protein} g</p>
-        <p>Carbs: {totals.carbs} g</p>
-        <p>Fat: {totals.fat} g</p>
-      </div>
+      <button onClick={handleAdd} disabled={!selectedItem}>Add</button>
+      <button onClick={handleClear}>Clear</button>
+
+      <h3>Log:</h3>
+      <ul>
+        {log.map((item, index) => (
+          <li key={index}>{item} - {foodData[item].calories} cal, {foodData[item].protein}g protein</li>
+        ))}
+      </ul>
     </div>
   );
 }
