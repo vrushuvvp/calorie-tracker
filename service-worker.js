@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/calorie-tracker/precache-manifest.8b98e147d1cdca30bd5adeae4296bdcc.js"
+  "/calorie-tracker/precache-manifest.5f7559be0a2917ecb38bababd946e9f1.js"
 );
 
 self.addEventListener('message', (event) => {
