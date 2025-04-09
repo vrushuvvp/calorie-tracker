@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/calorie-tracker/static/css/main.69eda509.chunk.css",
-    "main.js": "/calorie-tracker/static/js/main.8a8e09e2.chunk.js",
-    "main.js.map": "/calorie-tracker/static/js/main.8a8e09e2.chunk.js.map",
-    "runtime-main.js": "/calorie-tracker/static/js/runtime-main.1acd7218.js",
-    "runtime-main.js.map": "/calorie-tracker/static/js/runtime-main.1acd7218.js.map",
+    "main.css": "/calorie-tracker/static/css/main.306fbf10.chunk.css",
+    "main.js": "/calorie-tracker/static/js/main.fa58007e.chunk.js",
+    "main.js.map": "/calorie-tracker/static/js/main.fa58007e.chunk.js.map",
+    "runtime-main.js": "/calorie-tracker/static/js/runtime-main.d1a7e098.js",
+    "runtime-main.js.map": "/calorie-tracker/static/js/runtime-main.d1a7e098.js.map",
     "static/js/2.0941ac47.chunk.js": "/calorie-tracker/static/js/2.0941ac47.chunk.js",
     "static/js/2.0941ac47.chunk.js.map": "/calorie-tracker/static/js/2.0941ac47.chunk.js.map",
-    "static/js/3.ddc6a9a6.chunk.js": "/calorie-tracker/static/js/3.ddc6a9a6.chunk.js",
-    "static/js/3.ddc6a9a6.chunk.js.map": "/calorie-tracker/static/js/3.ddc6a9a6.chunk.js.map",
+    "static/js/3.6a667d5b.chunk.js": "/calorie-tracker/static/js/3.6a667d5b.chunk.js",
+    "static/js/3.6a667d5b.chunk.js.map": "/calorie-tracker/static/js/3.6a667d5b.chunk.js.map",
     "index.html": "/calorie-tracker/index.html",
-    "precache-manifest.07c8ed34c835ae529368157ec9bf12a1.js": "/calorie-tracker/precache-manifest.07c8ed34c835ae529368157ec9bf12a1.js",
+    "precache-manifest.d1732ad3714a94818a730c5253037e3b.js": "/calorie-tracker/precache-manifest.d1732ad3714a94818a730c5253037e3b.js",
     "service-worker.js": "/calorie-tracker/service-worker.js",
-    "static/css/main.69eda509.chunk.css.map": "/calorie-tracker/static/css/main.69eda509.chunk.css.map",
+    "static/css/main.306fbf10.chunk.css.map": "/calorie-tracker/static/css/main.306fbf10.chunk.css.map",
     "static/js/2.0941ac47.chunk.js.LICENSE.txt": "/calorie-tracker/static/js/2.0941ac47.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.1acd7218.js",
+    "static/js/runtime-main.d1a7e098.js",
     "static/js/2.0941ac47.chunk.js",
-    "static/css/main.69eda509.chunk.css",
-    "static/js/main.8a8e09e2.chunk.js"
+    "static/css/main.306fbf10.chunk.css",
+    "static/js/main.fa58007e.chunk.js"
   ]
 }
