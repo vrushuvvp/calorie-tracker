@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import Fuse from "fuse.js";
+import React, { useState } from "react";
 import "./App.css";
+import Fuse from "fuse.js";
 import foodData from "./foodData";
 
 function App() {
-  const [search, setSearch] = useState("");
+  const [input, setInput] = useState("");
   const [log, setLog] = useState([]);
-  const [suggestion, setSuggestion] = useState(null);
+  const [suggestion, setSuggestion] = useState("");
 
   const foodItems = Object.keys(foodData);
 
@@ -15,49 +15,38 @@ function App() {
     threshold: 0.3,
   });
 
-  useEffect(() => {
-    const storedLog = localStorage.getItem("foodLog");
-    if (storedLog) {
-      setLog(JSON.parse(storedLog));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("foodLog", JSON.stringify(log));
-  }, [log]);
-
-  const handleAdd = () => {
-    const food = search.trim().toLowerCase();
-    const matchedFood = foodItems.find(
-      (item) => item.toLowerCase() === food
-    );
-    if (matchedFood) {
-      setLog([...log, { name: matchedFood, ...foodData[matchedFood] }]);
-      setSearch("");
-      setSuggestion(null);
-    }
-  };
-
   const handleChange = (e) => {
-    const value = e.target.value;
-    setSearch(value);
+    const val = e.target.value;
+    setInput(val);
 
-    if (value.trim() === "") {
-      setSuggestion(null);
+    if (val.trim() === "") {
+      setSuggestion("");
       return;
     }
 
-    const results = fuse.search(value);
-    if (results.length > 0) {
-      setSuggestion(results[0].item);
+    const result = fuse.search(val);
+    if (result.length > 0) {
+      setSuggestion(result[0].item);
     } else {
-      setSuggestion(null);
+      setSuggestion("");
+    }
+  };
+
+  const handleAdd = () => {
+    const name = input.trim().toLowerCase();
+    const data = foodData[name];
+
+    if (data) {
+      setLog([...log, { name, ...data }]);
+      setInput("");
+      setSuggestion("");
+    } else {
+      alert("Food item not found.");
     }
   };
 
   const handleClear = () => {
     setLog([]);
-    localStorage.removeItem("foodLog");
   };
 
   const totals = log.reduce(
@@ -72,60 +61,46 @@ function App() {
   );
 
   return (
-    <div className="App">
+    <div className="container">
       <h1>🥬 Indian Food Tracker</h1>
-      <div className="input-container">
+      <div className="input-group">
         <input
           type="text"
-          placeholder="Enter Indian food..."
-          value={search}
+          value={input}
           onChange={handleChange}
+          placeholder="Enter Indian food..."
         />
         <button onClick={handleAdd}>Add</button>
       </div>
 
-      {suggestion && (
+      {suggestion && suggestion !== input.trim().toLowerCase() && (
         <p className="suggestion">
-          Did you mean: <em>{suggestion}</em>?
+          <em>Did you mean: <strong>{suggestion}</strong>?</em>
         </p>
       )}
 
-      {log.map((item, index) => (
-        <div className="card" key={index}>
-          <h2>{item.name.toUpperCase()}</h2>
-          <ul>
-            <li>
-              <strong>Calories:</strong> {item.calories} kcal
-            </li>
-            <li>
-              <strong>Protein:</strong> {item.protein} g
-            </li>
-            <li>
-              <strong>Carbs:</strong> {item.carbs} g
-            </li>
-            <li>
-              <strong>Fat:</strong> {item.fat} g
-            </li>
-          </ul>
-        </div>
-      ))}
+      <div className="log">
+        {log.map((item, index) => (
+          <div key={index} className="card">
+            <h3>{item.name.toUpperCase()}</h3>
+            <ul>
+              <li><strong>Calories:</strong> {item.calories} kcal</li>
+              <li><strong>Protein:</strong> {item.protein} g</li>
+              <li><strong>Carbs:</strong> {item.carbs} g</li>
+              <li><strong>Fat:</strong> {item.fat} g</li>
+            </ul>
+          </div>
+        ))}
+      </div>
 
       {log.length > 0 && (
         <div className="summary">
           <h2>📊 Daily Summary</h2>
-          <p>
-            <strong>Total Calories:</strong> {totals.calories} kcal
-          </p>
-          <p>
-            <strong>Total Protein:</strong> {totals.protein} g
-          </p>
-          <p>
-            <strong>Total Carbs:</strong> {totals.carbs} g
-          </p>
-          <p>
-            <strong>Total Fat:</strong> {totals.fat} g
-          </p>
-          <button onClick={handleClear}>Clear</button>
+          <p><strong>Total Calories:</strong> {totals.calories} kcal</p>
+          <p><strong>Total Protein:</strong> {totals.protein} g</p>
+          <p><strong>Total Carbs:</strong> {totals.carbs} g</p>
+          <p><strong>Total Fat:</strong> {totals.fat} g</p>
+          <button className="clear-btn" onClick={handleClear}>Clear</button>
         </div>
       )}
     </div>
