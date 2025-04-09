@@ -1,103 +1,131 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import Fuse from 'fuse.js';
-import foodData from './foodData'; // make sure you create this
+import React, { useEffect, useState } from "react";
+import Fuse from "fuse.js";
+import "./App.css";
+import foodData from "./foodData";
 
 function App() {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [log, setLog] = useState([]);
   const [suggestion, setSuggestion] = useState(null);
 
-  const fuse = new Fuse(Object.keys(foodData), {
+  const foodItems = Object.keys(foodData);
+
+  const fuse = new Fuse(foodItems, {
     includeScore: true,
     threshold: 0.3,
   });
 
   useEffect(() => {
-    const stored = localStorage.getItem('log');
-    if (stored) {
-      setLog(JSON.parse(stored));
+    const storedLog = localStorage.getItem("foodLog");
+    if (storedLog) {
+      setLog(JSON.parse(storedLog));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('log', JSON.stringify(log));
+    localStorage.setItem("foodLog", JSON.stringify(log));
   }, [log]);
 
   const handleAdd = () => {
-    const result = fuse.search(search);
-    if (result.length > 0) {
-      const bestMatch = result[0].item;
-      const nutrition = foodData[bestMatch];
-      setLog([...log, { name: bestMatch, ...nutrition }]);
-      setSearch('');
+    const food = search.trim().toLowerCase();
+    const matchedFood = foodItems.find(
+      (item) => item.toLowerCase() === food
+    );
+    if (matchedFood) {
+      setLog([...log, { name: matchedFood, ...foodData[matchedFood] }]);
+      setSearch("");
       setSuggestion(null);
+    }
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    if (value.trim() === "") {
+      setSuggestion(null);
+      return;
+    }
+
+    const results = fuse.search(value);
+    if (results.length > 0) {
+      setSuggestion(results[0].item);
     } else {
-      alert("No match found");
+      setSuggestion(null);
     }
   };
 
   const handleClear = () => {
     setLog([]);
-    localStorage.removeItem('log');
+    localStorage.removeItem("foodLog");
   };
 
-  useEffect(() => {
-    if (search) {
-      const result = fuse.search(search);
-      if (result.length > 0) {
-        setSuggestion(result[0].item);
-      } else {
-        setSuggestion(null);
-      }
-    } else {
-      setSuggestion(null);
-    }
-  }, [search]);
-
-  const total = log.reduce((acc, food) => {
-    acc.calories += food.calories;
-    acc.protein += food.protein;
-    acc.carbs += food.carbs;
-    acc.fat += food.fat;
-    return acc;
-  }, { calories: 0, protein: 0, carbs: 0, fat: 0 });
+  const totals = log.reduce(
+    (acc, item) => {
+      acc.calories += item.calories;
+      acc.protein += item.protein;
+      acc.carbs += item.carbs;
+      acc.fat += item.fat;
+      return acc;
+    },
+    { calories: 0, protein: 0, carbs: 0, fat: 0 }
+  );
 
   return (
-    <div className="container">
+    <div className="App">
       <h1>🥬 Indian Food Tracker</h1>
-      <div className="input-section">
+      <div className="input-container">
         <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          type="text"
           placeholder="Enter Indian food..."
+          value={search}
+          onChange={handleChange}
         />
         <button onClick={handleAdd}>Add</button>
       </div>
-      {suggestion && <div className="suggestion">Did you mean: <strong>{suggestion}</strong>?</div>}
 
-      <div className="log">
-        {log.map((item, idx) => (
-          <div key={idx} className="card">
-            <h3>{item.name.toUpperCase()}</h3>
-            <ul>
-              <li><b>Calories:</b> {item.calories} kcal</li>
-              <li><b>Protein:</b> {item.protein} g</li>
-              <li><b>Carbs:</b> {item.carbs} g</li>
-              <li><b>Fat:</b> {item.fat} g</li>
-            </ul>
-          </div>
-        ))}
-      </div>
+      {suggestion && (
+        <p className="suggestion">
+          Did you mean: <em>{suggestion}</em>?
+        </p>
+      )}
+
+      {log.map((item, index) => (
+        <div className="card" key={index}>
+          <h2>{item.name.toUpperCase()}</h2>
+          <ul>
+            <li>
+              <strong>Calories:</strong> {item.calories} kcal
+            </li>
+            <li>
+              <strong>Protein:</strong> {item.protein} g
+            </li>
+            <li>
+              <strong>Carbs:</strong> {item.carbs} g
+            </li>
+            <li>
+              <strong>Fat:</strong> {item.fat} g
+            </li>
+          </ul>
+        </div>
+      ))}
 
       {log.length > 0 && (
-        <div className="summary card">
+        <div className="summary">
           <h2>📊 Daily Summary</h2>
-          <p><b>Total Calories:</b> {total.calories} kcal</p>
-          <p><b>Total Protein:</b> {total.protein} g</p>
-          <p><b>Total Carbs:</b> {total.carbs} g</p>
-          <p><b>Total Fat:</b> {total.fat} g</p>
-          <button onClick={handleClear}>Clear All</button>
+          <p>
+            <strong>Total Calories:</strong> {totals.calories} kcal
+          </p>
+          <p>
+            <strong>Total Protein:</strong> {totals.protein} g
+          </p>
+          <p>
+            <strong>Total Carbs:</strong> {totals.carbs} g
+          </p>
+          <p>
+            <strong>Total Fat:</strong> {totals.fat} g
+          </p>
+          <button onClick={handleClear}>Clear</button>
         </div>
       )}
     </div>
