@@ -63,12 +63,7 @@ function App() {
 localStorage.setItem("lastPrediction", JSON.stringify({ dish, ...data }));
 
 // On component load
-useEffect(() => {
-  const saved = localStorage.getItem("lastPrediction");
-  if (saved) {
-    setResult(JSON.parse(saved));
-  }
-}, []);
+
 
 
   return (
