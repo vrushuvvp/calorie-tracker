@@ -59,6 +59,17 @@ function App() {
     },
     { calories: 0, protein: 0, carbs: 0, fat: 0 }
   );
+  // Save after prediction
+localStorage.setItem("lastPrediction", JSON.stringify({ dish, ...data }));
+
+// On component load
+useEffect(() => {
+  const saved = localStorage.getItem("lastPrediction");
+  if (saved) {
+    setResult(JSON.parse(saved));
+  }
+}, []);
+
 
   return (
     <div className="container">
